@@ -36,3 +36,10 @@ function Texture_to_Sprite(spr_tmp, tex_temp, tex){
 	surface_free(tmp_surface);
 	return buff;
 }
+
+function Surface_Get_Sprite_Buffer(surface, sprite){
+	var frames = sprite_get_number(sprite);
+	var spr_h = sprite_get_height(sprite);
+	var spr_w = sprite_get_width(sprite);
+	var spr_w_adj = spr_w * frames;
+}

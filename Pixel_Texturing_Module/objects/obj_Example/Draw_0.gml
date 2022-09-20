@@ -9,7 +9,9 @@ if(buffer !=-1){
 	surface_set_target(surface);
 	show_debug_message(surface_get_target());
 	show_debug_message("drawing");
-	draw_surface(surface,50,50)
+	
 	
 	surface_reset_target();
+	
+	draw_surface(surface,50,50);
 }

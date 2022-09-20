@@ -4,12 +4,14 @@
   "name": "Pixel_Texturing_Module",
   "resources": [
     {"id":{"name":"spr_Example_Texture_3","path":"sprites/spr_Example_Texture_3/spr_Example_Texture_3.yy",},"order":4,},
-    {"id":{"name":"spr_Template","path":"sprites/spr_Template/spr_Template.yy",},"order":1,},
+    {"id":{"name":"obj_Sprite_Loader","path":"objects/obj_Sprite_Loader/obj_Sprite_Loader.yy",},"order":2,},
+    {"id":{"name":"spr_Texture_Map_Template","path":"sprites/spr_Texture_Map_Template/spr_Texture_Map_Template.yy",},"order":1,},
     {"id":{"name":"Sprite_Mapping","path":"scripts/Sprite_Mapping/Sprite_Mapping.yy",},"order":0,},
+    {"id":{"name":"obj_Test","path":"objects/obj_Test/obj_Test.yy",},"order":1,},
     {"id":{"name":"obj_Example","path":"objects/obj_Example/obj_Example.yy",},"order":0,},
     {"id":{"name":"spr_Example_Texture_1","path":"sprites/spr_Example_Texture_1/spr_Example_Texture_1.yy",},"order":2,},
     {"id":{"name":"spr_Example_Texture_2","path":"sprites/spr_Example_Texture_2/spr_Example_Texture_2.yy",},"order":3,},
-    {"id":{"name":"spr_Example_Sprite","path":"sprites/spr_Example_Sprite/spr_Example_Sprite.yy",},"order":0,},
+    {"id":{"name":"spr_Sprite_Template","path":"sprites/spr_Sprite_Template/spr_Sprite_Template.yy",},"order":0,},
     {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},"order":0,},
   ],
   "Options": [
