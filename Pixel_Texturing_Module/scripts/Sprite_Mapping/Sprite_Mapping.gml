@@ -11,18 +11,21 @@ function Texture_to_Sprite(spr_tmp, tex_temp, tex){
 	var spr_w = sprite_get_width(spr_tmp)*frames;
 	var tmp_surface = surface_create(spr_w,spr_h);
 	
-	//draw the tmp sprite to the surface
-	surface_set_target(tmp_surface);
-	draw_clear_alpha(c_black, 0);
-	draw_sprite(spr_tmp,0,0,0);
-		
-	//store surface sprite in buffer	
 	var buff_size = spr_w * spr_h * 4;//buffer size in bytes
 	var buff = buffer_create(buff_size,buffer_fixed,1);
+	
+	//draw the tmp sprite to the surface
+	surface_set_target(tmp_surface);
+    draw_clear_alpha(c_white, 1);
+    surface_reset_target();
+    buffer_get_surface(buff, tmp_surface, 0);
+
+	//store surface sprite in buffer	
+	
+	show_message(buffer_get_size(buff));
 	buffer_get_surface(buff,tmp_surface,0);
 	
-	show_message(buff);
+	show_message(buffer_seek(buff,buffer_seek_start,0));
+	show_message(buffer_read(buff,buffer_u8));
 	
-	//reset application surface
-	surface_reset_target();
 }
