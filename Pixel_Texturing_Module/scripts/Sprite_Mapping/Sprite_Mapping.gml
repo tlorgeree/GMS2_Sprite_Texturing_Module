@@ -28,8 +28,8 @@ function Sprite_to_Buffer(spr_tmp){
 		
 }
 
-function Find_Match_2_Sprites(spr_tmp, spr_tmp2){
-	//store spr 1 in buff1
+function Find_Match_2_Sprites(spr_tmp, spr_tmp2, spr_tmp3){
+	//store spr 1 in buff1 this is sprite template
 	var spr_w =sprite_get_width(spr_tmp)*sprite_get_number(spr_tmp);
 	var spr_h = sprite_get_height(spr_tmp);
 
@@ -52,7 +52,7 @@ function Find_Match_2_Sprites(spr_tmp, spr_tmp2){
 	surface_free(_surf);
 		
 		
-	//store spr 2 in buff2
+	//store spr 2 in buff2 this is texture template
 	var spr_w2 =sprite_get_width(spr_tmp2)*sprite_get_number(spr_tmp2);
 	var spr_h2 = sprite_get_height(spr_tmp2);
 
@@ -74,9 +74,31 @@ function Find_Match_2_Sprites(spr_tmp, spr_tmp2){
 	//Free the surface and return the buffer
 	surface_free(_surf2);
 	
+	//store spr 3 in buff3 this is texture to be applied
+	var spr_w3 =sprite_get_width(spr_tmp3)*sprite_get_number(spr_tmp3);
+	var spr_h3 = sprite_get_height(spr_tmp3);
+
+	//Draw the sprite into a surface
+	var _surf3 = surface_create(spr_w3, spr_h3);
+		
+	surface_set_target(_surf3);
+		
+	for(var f3=0; f3<sprite_get_number(spr_tmp3);++f3){
+		draw_sprite(spr_tmp3,f3,sprite_get_width(spr_tmp3)*f3,0);
+	}
+			
+	surface_reset_target();
+		
+	//Get the color data into a surface
+	var _sprBuff3 = buffer_create(spr_w3 * spr_h3 * 4, buffer_fixed, 1);
+	buffer_get_surface(_sprBuff3, _surf3, 0);
+		
+	//Free the surface and return the buffer
+	surface_free(_surf3);
+	
 	
 	//Find matching values
-	Buff_Pixel_Match_Report(_sprBuff,_sprBuff2);
+	Buff_Pixel_Match_From_Map(_sprBuff,_sprBuff2,_sprBuff3);
 	
 }
 
@@ -112,13 +134,19 @@ function Buff_Pixel_Match_Report(buff1, buff2){
 }
 
 function Buff_Pixel_Match_From_Map(buff_spr, buff_tem, buff_tex){
-var map = ds_map_create();
-for(var j = 0; j < buffer_get_size(buff_tem);j += 4){
-	var str = Buffer_Stringify_Pixel_Data(buff_tem,j);
-	if(is_undefined(ds_map_find_value(map, str)){
-		ds_map_add(map,str,)
+	var map = ds_map_create();
+	
+	//create color dictionary from map
+	for(var j = 0; j < buffer_get_size(buff_tem);j += 4){
+		var str = Buffer_Stringify_Pixel_Data(buff_tem,j);
+		if(is_undefined(ds_map_find_value(map, str))){
+			ds_map_add(map,str,Buff_Get_Pixel_Data(buff_tex,j));
+		}
 	}
-}
 
-
+	for(var i = 0; i < buffer_get_size(buff_spr);i += 4){
+		if(buffer_peek(buff_spr,i+3,buffer_u8)!=0){
+			
+		}
+	}
 }
