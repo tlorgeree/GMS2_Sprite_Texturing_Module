@@ -1,12 +1,2 @@
-//Draw to surface
-if (mouse_check_button(mb_left)){
- surface_set_target(surface);
 
- draw_circle(mouse_x, mouse_y, brush_size, false);
-
- surface_reset_target();
-}
-
-//Draw surface
-draw_surface(surface, 0, 0);
-
+if(surface_exists(surface_test))draw_surface(surface_test,0,0);
