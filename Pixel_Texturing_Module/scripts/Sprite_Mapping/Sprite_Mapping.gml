@@ -2,7 +2,6 @@ function Sprite_to_Buffer(spr_tmp){
 	///@param spr_tmp the template sprite that the texture will be applied to
 	///@param tex_tmp the template texture map for that sprite type
 	///@param tex the texture being used to create the sprite
-
 		
 		var spr_w =sprite_get_width(spr_tmp)*sprite_get_number(spr_tmp);
 		var spr_h = sprite_get_height(spr_tmp);
@@ -86,11 +85,16 @@ function Buff_Get_Pixel_Data(buffer,offset){
 	buffer_peek(buffer,offset+2,buffer_u8), buffer_peek(buffer,offset+3,buffer_u8)];
 	
 }
+
+function Buffer_Stringify_Pixel_Data(buffer,offset){
+	return string(buffer_peek(buffer,offset,buffer_u8)) + string(buffer_peek(buffer,offset+1,buffer_u8))
+	+ string(buffer_peek(buffer,offset+2,buffer_u8)) +  string(buffer_peek(buffer,offset+3,buffer_u8));
+}
 function Buff_Pixel_Match_Report(buff1, buff2){
-	
 	var operations = 0;
 	//show_message(buffer_get_size(buff1));
 	//show_message(buffer_get_size(buff2));
+
 	for(var i = 0; i < buffer_get_size(buff1);i += 4){
 		if(buffer_peek(buff1,i+3,buffer_u8)!=0){
 			for(var j = 0; j < buffer_get_size(buff2);j += 4){
@@ -105,4 +109,16 @@ function Buff_Pixel_Match_Report(buff1, buff2){
 	}
 	
 	show_debug_message("This ran: " + string(operations));
+}
+
+function Buff_Pixel_Match_From_Map(buff_spr, buff_tem, buff_tex){
+var map = ds_map_create();
+for(var j = 0; j < buffer_get_size(buff_tem);j += 4){
+	var str = Buffer_Stringify_Pixel_Data(buff_tem,j);
+	if(is_undefined(ds_map_find_value(map, str)){
+		ds_map_add(map,str,)
+	}
+}
+
+
 }
