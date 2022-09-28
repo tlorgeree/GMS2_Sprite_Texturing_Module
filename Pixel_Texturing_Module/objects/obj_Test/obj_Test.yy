@@ -2,7 +2,10 @@
   "resourceType": "GMObject",
   "resourceVersion": "1.0",
   "name": "obj_Test",
-  "spriteId": null,
+  "spriteId": {
+    "name": "spr_Sprite_Template",
+    "path": "sprites/spr_Sprite_Template/spr_Sprite_Template.yy",
+  },
   "solid": false,
   "visible": true,
   "managed": true,
