@@ -5,7 +5,6 @@ function Sprite_to_Buffer(spr_tmp){
 		
 		var spr_w =sprite_get_width(spr_tmp)*sprite_get_number(spr_tmp);
 		var spr_h = sprite_get_height(spr_tmp);
-		show_message(string(spr_w*spr_h));
 		//Draw the sprite into a surface
 		var _surf = surface_create(spr_w, spr_h);
 		
@@ -30,7 +29,8 @@ function Sprite_to_Buffer(spr_tmp){
 
 function Find_Match_2_Sprites(spr_tmp, spr_tmp2, spr_tmp3){
 	//store spr 1 in buff1 this is sprite template
-	var spr_w =sprite_get_width(spr_tmp)*sprite_get_number(spr_tmp);
+	var frames = sprite_get_number(spr_tmp);
+	var spr_w =sprite_get_width(spr_tmp)*frames;
 	var spr_h = sprite_get_height(spr_tmp);
 
 	//Draw the sprite into a surface
@@ -38,8 +38,8 @@ function Find_Match_2_Sprites(spr_tmp, spr_tmp2, spr_tmp3){
 		
 	surface_set_target(_surf);
 		
-	for(var f=0; f<sprite_get_number(spr_tmp);++f){
-		draw_sprite(spr_tmp,f,sprite_get_width(spr_tmp)*f,0);
+	for(var f=0; f<frames;++f){
+		draw_sprite(spr_tmp,f,sprite_get_xoffset(spr_tmp)+sprite_get_width(spr_tmp)*f,sprite_get_yoffset(spr_tmp));
 	}
 			
 	surface_reset_target();
@@ -62,7 +62,7 @@ function Find_Match_2_Sprites(spr_tmp, spr_tmp2, spr_tmp3){
 	surface_set_target(_surf2);
 		
 	for(var f2=0; f2<sprite_get_number(spr_tmp2);++f2){
-		draw_sprite(spr_tmp2,f2,sprite_get_width(spr_tmp2)*f2,0);
+		draw_sprite(spr_tmp2,f2, sprite_get_width(spr_tmp2)*f2,0);
 	}
 			
 	surface_reset_target();
@@ -96,10 +96,33 @@ function Find_Match_2_Sprites(spr_tmp, spr_tmp2, spr_tmp3){
 	//Free the surface and return the buffer
 	surface_free(_surf3);
 	
+	//Convert Sprite Tempate to textured sprite
+	var buff_new = Buff_Pixel_Match_From_Map(_sprBuff,_sprBuff2,_sprBuff3);
 	
-	//Find matching values
-	Buff_Pixel_Match_From_Map(_sprBuff,_sprBuff2,_sprBuff3);
+	var spr_w =sprite_get_width(spr_tmp)*frames;
+	var spr_h = sprite_get_height(spr_tmp);
+
+	var _surf = surface_create(spr_w, spr_h);
+	buffer_seek(buff_new,buffer_seek_start,0);
+	buffer_set_surface(buff_new,_surf,0);
 	
+	var sprite = sprite_create_from_surface(_surf,0,0,spr_w/frames,spr_h,0,0,
+		sprite_get_xoffset(spr_tmp),sprite_get_yoffset(spr_tmp));
+	
+	
+	for (var i = 1; i < frames; ++i)
+	{
+		sprite_add_from_surface(sprite, _surf, i*(spr_w/frames), 0, spr_w/frames, spr_h, 0, 0);
+	}
+	
+	surface_free(_surf);
+	buffer_delete(buff_new);
+	buffer_delete(_sprBuff);
+	buffer_delete(_sprBuff2);
+	buffer_delete(_sprBuff3);
+
+	return sprite;
+
 }
 
 function Buff_Get_Pixel_Data(buffer,offset){
@@ -139,14 +162,29 @@ function Buff_Pixel_Match_From_Map(buff_spr, buff_tem, buff_tex){
 	//create color dictionary from map
 	for(var j = 0; j < buffer_get_size(buff_tem);j += 4){
 		var str = Buffer_Stringify_Pixel_Data(buff_tem,j);
-		if(is_undefined(ds_map_find_value(map, str))){
-			ds_map_add(map,str,Buff_Get_Pixel_Data(buff_tex,j));
+		if(is_undefined(ds_map_find_value(map, str))){//if not in map
+			ds_map_add(map,str,Buff_Get_Pixel_Data(buff_tex,j)); //add color to map
 		}
 	}
-
+	
+	//Go through sprite and replace colors with texture using map.
 	for(var i = 0; i < buffer_get_size(buff_spr);i += 4){
-		if(buffer_peek(buff_spr,i+3,buffer_u8)!=0){
-			
+		if(buffer_peek(buff_spr,i+3,buffer_u8)!=0){//if the pixel isn't transparent
+			var curr_pix = Buffer_Stringify_Pixel_Data(buff_spr,i);
+			var map_find = ds_map_find_value(map, curr_pix);
+			if(!is_undefined(map_find)){
+				//if color is found in dictionary, apply corresponding texture color
+				for(var b = 0; b<=2; ++b){
+					buffer_seek(buff_spr, buffer_seek_start,i+b)
+					buffer_write(buff_spr,buffer_u8,map_find[b]);
+				}
+			}
 		}
 	}
+	
+	//delete the ds_map
+	ds_map_destroy(map);
+	
+	//return the modified buffer
+	return buff_spr;
 }
