@@ -7,15 +7,15 @@ function Sprite_Texture_From_Map(spr_tmp, spr_map, spr_tex){
 			
 	
 	//Convert Sprite Tempate to textured sprite
-	var buff_new = Buff_Pixel_Match_From_Map(buff1, buff2, buff3);
+	buff1 = Buff_Pixel_Match_From_Map(buff1, buff2, buff3);
 
 	var frames = sprite_get_number(spr_tmp);
 	var spr_w =sprite_get_width(spr_tmp)*frames;
 	var spr_h = sprite_get_height(spr_tmp);
 	
 	var _surf = surface_create(spr_w, spr_h);
-	buffer_seek(buff_new,buffer_seek_start,0);
-	buffer_set_surface(buff_new,_surf,0);
+	buffer_seek(buff1,buffer_seek_start,0);
+	buffer_set_surface(buff1,_surf,0);
 	
 	var sprite = sprite_create_from_surface(_surf,0,0,spr_w/frames,spr_h,0,0,
 		sprite_get_xoffset(spr_tmp),sprite_get_yoffset(spr_tmp));
@@ -26,7 +26,6 @@ function Sprite_Texture_From_Map(spr_tmp, spr_map, spr_tex){
 	}
 	
 	surface_free(_surf);
-	buffer_delete(buff_new);
 	buffer_delete(buff1);
 	buffer_delete(buff2);
 	buffer_delete(buff3);
@@ -36,6 +35,7 @@ function Sprite_Texture_From_Map(spr_tmp, spr_map, spr_tex){
 	return sprite;
 
 }
+
 function Buffer_Store_All_Sprite_Frames(sprite){
 	//Draw all frames of the sprite to the surface
 	var frames = sprite_get_number(sprite);
