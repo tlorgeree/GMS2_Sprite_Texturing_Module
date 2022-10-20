@@ -7,3 +7,4 @@ sprite[2] = Sprite_Texture_From_Map(spr_Sprite_Template,spr_Texture_Map_Template
 sprite[3] = spr_Sprite_Template;
 
 ind = 0;
+
