@@ -3,8 +3,8 @@
   "resourceVersion": "1.0",
   "name": "obj_Test",
   "spriteId": {
-    "name": "spr_Sprite_Template",
-    "path": "sprites/spr_Sprite_Template/spr_Sprite_Template.yy",
+    "name": "spr_Sprite_Template_2",
+    "path": "sprites/spr_Sprite_Template_2/spr_Sprite_Template_2.yy",
   },
   "solid": false,
   "visible": true,
